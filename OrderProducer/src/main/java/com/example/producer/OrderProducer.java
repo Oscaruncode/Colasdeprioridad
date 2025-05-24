@@ -17,12 +17,21 @@ public class OrderProducer {
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
-            Pedido pedido = new Pedido("123", "Juan Pérez", 249.99);
             ObjectMapper mapper = new ObjectMapper();
-            String message = mapper.writeValueAsString(pedido);
 
-            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-            System.out.println("Pedido enviado: " + message);
+            for (int i = 1; i <= 10; i++) {
+                Pedido pedido = new Pedido(
+                    String.valueOf(1000 + i),
+                    "Cliente " + i,
+                    Math.round((Math.random() * 1000) * 100.0) / 100.0 
+                );
+
+                String message = mapper.writeValueAsString(pedido);
+                channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+                System.out.println("Pedido enviado: " + message);
+
+                Thread.sleep(500); 
+            }
         }
     }
 }
