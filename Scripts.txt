@@ -28,3 +28,7 @@ mvn archetype:generate -DgroupId=com.example.consumer -DartifactId=OrderConsumer
 Ejecutar programas:
 mvn clean compile
 mvn exec:java
+
+En powershell respecto de OrderConsumer
+mvn exec:java "-Dexec.mainClass=com.example.consumer.OrderConsumer"
+mvn exec:java "-Dexec.mainClass=com.example.consumer.ConfirmationConsumer"
