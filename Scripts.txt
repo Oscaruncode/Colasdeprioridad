@@ -1,0 +1,30 @@
+En un docker container:
+docker run -d --hostname rabbitmq --name rabbitmq \
+  -p 5672:5672 -p 15672:15672 \
+  rabbitmq:3-management
+
+
+en powershell:
+docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+
+
+Java -v
+openjdk version "21.0.7" 2025-04-15 LTS                                                                                 
+OpenJDK Runtime Environment Temurin-21.0.7+6 (build 21.0.7+6-LTS)                                                       
+OpenJDK 64-Bit Server VM Temurin-21.0.7+6 (build 21.0.7+6-LTS, mixed mode, sharing)    
+
+mvn -v
+Apache Maven 3.9.x
+Java version: 21.0.7
+
+Crear carpetas
+mkdir PedidoApp
+cd PedidoApp
+mvn archetype:generate -DgroupId=com.example.producer -DartifactId=OrderProducer -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+mvn archetype:generate -DgroupId=com.example.consumer -DartifactId=OrderConsumer -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+
+
+Ejecutar programas:
+mvn clean compile
+mvn exec:java
