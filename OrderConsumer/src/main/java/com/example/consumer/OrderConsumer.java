@@ -8,6 +8,7 @@ import com.rabbitmq.client.DeliverCallback;
 
 public class OrderConsumer {
     private static final String QUEUE_NAME = "pedidos";
+    private static final String QUEUE_CONFIRMACIONES = "confirmaciones";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -17,6 +18,7 @@ public class OrderConsumer {
         Channel channel = connection.createChannel();
 
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        channel.queueDeclare(QUEUE_CONFIRMACIONES, false, false, false, null);
         System.out.println("Esperando pedidos...");
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
@@ -28,6 +30,10 @@ public class OrderConsumer {
             System.out.println("- ID: " + pedido.id);
             System.out.println("- Cliente: " + pedido.cliente);
             System.out.println("- Total: $" + pedido.total);
+
+            String confirmationMessage = "Confirmación: Pedido " + pedido.id + " procesado para " + pedido.cliente;
+            channel.basicPublish("", QUEUE_CONFIRMACIONES, null, confirmationMessage.getBytes());
+            System.out.println("Mensaje de confirmación enviado.");
         };
 
         channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
